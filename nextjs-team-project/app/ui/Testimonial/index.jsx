@@ -2,7 +2,13 @@ import SingleTestimony from "./SingleTestimony";
 
 
 
-export default function Testimonial() {
+export default function Testimonial({data}) {
+
+    let testimonies = data.map((testimony, index) => {
+        return (
+            <SingleTestimony key={index} {...testimony} />
+        );
+    });
 
     return (
         <div className="container my-24 mx-auto md:px-6">
@@ -10,7 +16,7 @@ export default function Testimonial() {
                 <h2 className="mb-12 text-3xl font-bold">Ils ont eu affaire à eux !</h2>
 
                 <div className="grid gap-x-6 md:grid-cols-3 lg:gap-x-12">
-                    Testimonies
+                    {testimonies}
                 </div>
             </section>
         </div>

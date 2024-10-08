@@ -80,9 +80,18 @@ export type CustomerField = {
   name: string;
 };
 
-export type InvoiceForm = {
+export type Team = {
   id: string;
-  customer_id: string;
-  amount: number;
-  status: 'pending' | 'paid';
+  title: string;
+  heading: string;
+  description: string;
 };
+
+export type Employee = {
+  id: string;
+  team_id: string;
+  image: string;
+  title: string;
+  subtitle: string
+};
+

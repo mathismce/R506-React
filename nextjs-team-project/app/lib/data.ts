@@ -2,31 +2,46 @@ import { sql } from '@vercel/postgres';
 import {
   CustomerField,
   CustomersTableType,
-  InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
+  Team, 
+  Employee
 } from './definitions';
 import { formatCurrency } from './utils';
 
-export async function fetchRevenue() {
+
+export async function fetchTeams() {
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
     // console.log('Fetching revenue data...');
     // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("fetching data");
 
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
+    const dataTeam = await sql<Team>`SELECT * FROM teams`;
+    const dataEmployees = await sql<Employee>`SELECT * FROM employees`;
+
+    console.log("données recup");
+
+    const data = {
+      title: dataTeam.rows[0].title,
+      heading : dataTeam.rows[0].heading,
+      description : dataTeam.rows[0].description,
+      employees : dataEmployees.rows
+    };
+
 
     // console.log('Data fetch completed after 3 seconds.');
 
-    return data.rows;
+    return data;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch revenue data.');
   }
 }
+
 
 export async function fetchLatestInvoices() {
   try {
@@ -140,30 +155,30 @@ export async function fetchInvoicesPages(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string) {
-  try {
-    const data = await sql<InvoiceForm>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+// export async function fetchInvoiceById(id: string) {
+//   try {
+//     const data = await sql<InvoiceForm>`
+//       SELECT
+//         invoices.id,
+//         invoices.customer_id,
+//         invoices.amount,
+//         invoices.status
+//       FROM invoices
+//       WHERE invoices.id = ${id};
+//     `;
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
+//     const invoice = data.rows.map((invoice) => ({
+//       ...invoice,
+//       // Convert amount from cents to dollars
+//       amount: invoice.amount / 100,
+//     }));
 
-    return invoice[0];
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
-  }
-}
+//     return invoice[0];
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch invoice.');
+//   }
+// }
 
 export async function fetchCustomers() {
   try {
