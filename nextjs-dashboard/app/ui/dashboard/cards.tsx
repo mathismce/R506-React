@@ -21,6 +21,7 @@ export default async function CardWrapper() {
     numberOfCustomers,
     totalPaidInvoices,
     totalPendingInvoices,
+    largestPaidInvoice
   } = await fetchCardData();
   return (
     <>
@@ -33,6 +34,11 @@ export default async function CardWrapper() {
         title="Total Customers"
         value={numberOfCustomers}
         type="customers"
+      />
+      <Card
+        title="Le plus gros montant de facture"
+        value={largestPaidInvoice}
+        type="invoices"
       />
     </>
   );
